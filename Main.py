@@ -20,18 +20,19 @@ def ask_user():
             help_key()
         elif user_input.lower() == "clear":
             driver.clear_file()
-            print("Cleared all tasks!")
         elif user_input.lower().startswith("add"):
             driver.add_task(user_input.split()[1])  # Leave "add" cmd out
-            print("Added")
         elif user_input.lower().startswith("edit"):
             driver.edit_task(user_input.split()[1])  # Leave "edit" cmd out
+        elif user_input.lower().startswith("rm"):
+            driver.add_task(user_input.split()[1])  # Leave "rm" cmd out
 
 
 def help_key():
     key = """
-    Add tasks: add <task>
-    Edit tasks: edit <task #>
+    Add task: add <task>
+    Edit task: edit <task #>
+    Remove task: rm <task #>
     Clear all tasks: clear
     Show tasks: show
     Show help key: help
