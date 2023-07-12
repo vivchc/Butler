@@ -19,13 +19,20 @@ def ask_user():
         elif user_input.lower() == "help":
             help_key()
         elif user_input.lower() == "clear":
-            driver.clear_file()
+            try:
+                driver.clear_file()
+                print("Cleared all tasks!")
+            except FileNotFoundError:
+                print("Already clear!")
         elif user_input.lower().startswith("add"):
             driver.add_task(user_input.split()[1])  # Leave "add" cmd out
+            print("Added")
         elif user_input.lower().startswith("edit"):
             driver.edit_task(user_input.split()[1])  # Leave "edit" cmd out
+            print("Edited")
         elif user_input.lower().startswith("rm"):
-            driver.add_task(user_input.split()[1])  # Leave "rm" cmd out
+            driver.remove_task(user_input.split()[1])  # Leave "rm" cmd out
+            print("Removed")
 
 
 def help_key():

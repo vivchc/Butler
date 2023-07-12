@@ -9,7 +9,6 @@ class TaskAppDriver:
         task_num = self.total_num_of_tasks()  # 0-based numbering
         file = open("tasklist.txt", "a")
         file.write(f"{task_num} {task}\n")
-        print("Added")
 
     def edit_task(self, n):
         """Edits the nth task."""
@@ -26,7 +25,7 @@ class TaskAppDriver:
                 # Put new task into queue
                 task = input(f"New task #{n}: ")
             else:
-                task = task.split()[1]
+                task = task.split(maxsplit=1)[1]
 
             q.put(task)
 
@@ -34,7 +33,6 @@ class TaskAppDriver:
             print("Task not found.")
         else:
             self.rewrite_file(q)
-            print("Edited")
 
     def remove_task(self, n):
         """Removes the nth task."""
@@ -49,14 +47,14 @@ class TaskAppDriver:
             # Puts tasks into queue ONLY if not deleted one.
             # Only inserts task, numbering added later.
             if task_num != n:
-                task = task.split()[1]
+                task = task.split(maxsplit=1)[1]
+                task1 = task.split(maxsplit=1)[1]
                 q.put(task)
 
         if not_found == 1:
             print("Task not found.")
         else:
             self.rewrite_file(q)
-            print("Removed")
 
     def rewrite_file(self, q):
         """Rewrites file given a queue of tasks (FIFO)."""
@@ -68,13 +66,9 @@ class TaskAppDriver:
 
     def clear_file(self):
         """Clears all tasks from file."""
-        try:
-            file = open("tasklist.txt", "r+")
-            file.seek(0)
-            file.truncate()  # truncates file to 0th byte
-            print("Cleared all tasks!")
-        except FileNotFoundError:
-            print("Already clear!")
+        file = open("tasklist.txt", "r+")
+        file.seek(0)
+        file.truncate()  # truncates file to 0th byte
 
     def show_all_tasks(self):
         """Prints out all tasks on file."""
