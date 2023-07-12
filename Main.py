@@ -15,10 +15,17 @@ def ask_user():
             driver.close_file()
             exit()
         elif user_input.lower() == "show":
-            driver.show_all_tasks()
+            error_msg = "No tasks to show."
+            try:
+                if driver.total_num_of_tasks() == 0:
+                    print(error_msg)
+                else:
+                    driver.show_all_tasks()
+            except FileNotFoundError:
+                print(error_msg)
         elif user_input.lower() == "help":
             help_key()
-        elif user_input.lower() == "clear":
+        elif user_input.lower() == "clc":
             try:
                 driver.clear_file()
                 print("Cleared all tasks!")
@@ -40,7 +47,7 @@ def help_key():
     Add task: add <task>
     Edit task: edit <task #>
     Remove task: rm <task #>
-    Clear all tasks: clear
+    Clear all tasks: clc
     Show tasks: show
     Show help key: help
     Exit app: quit or q

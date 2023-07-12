@@ -25,9 +25,9 @@ class TaskAppDriver:
                 # Put new task into queue
                 task = input(f"New task #{n}: ")
             else:
-                task = task.split(maxsplit=1)[1]
+                task = task.split()[1:]
 
-            q.put(task)
+            q.put(" ".join(task))
 
         if not_found == 1:
             print("Task not found.")
@@ -47,9 +47,8 @@ class TaskAppDriver:
             # Puts tasks into queue ONLY if not deleted one.
             # Only inserts task, numbering added later.
             if task_num != n:
-                task = task.split(maxsplit=1)[1]
-                task1 = task.split(maxsplit=1)[1]
-                q.put(task)
+                task = task.split()[1:]
+                q.put(" ".join(task))
 
         if not_found == 1:
             print("Task not found.")
@@ -72,12 +71,9 @@ class TaskAppDriver:
 
     def show_all_tasks(self):
         """Prints out all tasks on file."""
-        try:
-            file = open("tasklist.txt", "r")
-            for task in file.readlines():
-                print(f"{task[:-1]}")  # Leaves out newline char
-        except FileNotFoundError:
-            print("No tasks to show.")
+        file = open("tasklist.txt", "r")
+        for task in file.readlines():
+            print(task[:-1])  # Leaves out newline char
 
     def total_num_of_tasks(self):
         """Returns the total number of tasks currently on file."""
