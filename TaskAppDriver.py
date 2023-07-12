@@ -43,6 +43,7 @@ class TaskAppDriver:
             self.add_task(q.get())
 
     def clear_file(self):
+        """Clears all tasks from file."""
         file = open("tasklist.txt", "r+")
         file.seek(0)
         file.truncate()  # truncates file to 0th byte
