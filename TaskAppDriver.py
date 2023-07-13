@@ -38,7 +38,7 @@ class TaskAppDriver:
         """Removes the nth task."""
         file = open("tasklist.txt", "r")
         q = Queue(maxsize=0)  # infinite size
-        not_found = 0  # Tracks if nth task exists
+        found = 0  # Tracks if nth task exists
 
         # If task exists, nth task deleted
         for task in file.readlines():
@@ -49,11 +49,12 @@ class TaskAppDriver:
             if task_num != n:
                 task = task.split()[1:]
                 q.put(" ".join(task))
+            else:
+                found = 1
 
-        if not_found == 1:
-            print("Task not found.")
-        else:
+        if found == 1:
             self.rewrite_file(q)
+        return found
 
     def rewrite_file(self, q):
         """Rewrites file given a queue of tasks (FIFO)."""
@@ -69,7 +70,7 @@ class TaskAppDriver:
         file.seek(0)
         file.truncate()  # truncates file to 0th byte
 
-    def show_all_tasks(self):
+    def show_tasks(self):
         """Prints out all tasks on file."""
         file = open("tasklist.txt", "r")
         for task in file.readlines():

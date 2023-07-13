@@ -27,8 +27,15 @@ def ask_user():
             driver.edit_task(user_input.split()[1])  # Leave "edit" cmd out
             print("Edited")
         elif user_input.lower().startswith("rm"):
-            driver.remove_task(user_input.split()[1])  # Leave "rm" cmd out
-            print("Removed")
+            remove_tasks(user_input)
+
+
+def remove_tasks(user_input):
+    input = user_input.split()[1]  # Leave "rm" cmd out
+    if driver.remove_task(input):
+        print("Removed")
+    else:
+        print("Task not found.")
 
 
 def show_tasks():
@@ -53,6 +60,7 @@ def clear_tasks():
 
 
 def help_key():
+    """String representating help menu."""
     key = """
     Add task: add <task>
     Edit task: edit <task #>
