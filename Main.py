@@ -15,22 +15,11 @@ def ask_user():
             driver.close_file()
             exit()
         elif user_input.lower() == "show":
-            error_msg = "No tasks to show."
-            try:
-                if driver.total_num_of_tasks() == 0:
-                    print(error_msg)
-                else:
-                    driver.show_all_tasks()
-            except FileNotFoundError:
-                print(error_msg)
+            show_tasks()
         elif user_input.lower() == "help":
             help_key()
         elif user_input.lower() == "clc":
-            try:
-                driver.clear_file()
-                print("Cleared all tasks!")
-            except FileNotFoundError:
-                print("Already clear!")
+            clear_tasks()
         elif user_input.lower().startswith("add"):
             driver.add_task(user_input.split()[1])  # Leave "add" cmd out
             print("Added")
@@ -40,6 +29,27 @@ def ask_user():
         elif user_input.lower().startswith("rm"):
             driver.remove_task(user_input.split()[1])  # Leave "rm" cmd out
             print("Removed")
+
+
+def show_tasks():
+    """Show tasks and handle errors."""
+    error_msg = "No tasks to show."
+    try:
+        if driver.total_num_of_tasks() == 0:
+            print(error_msg)
+        else:
+            driver.show_tasks()
+    except FileNotFoundError:
+        print(error_msg)
+
+
+def clear_tasks():
+    """Clear tasks and handles errors."""
+    try:
+        driver.clear_file()
+        print("Cleared all tasks!")
+    except FileNotFoundError:
+        print("Already clear!")
 
 
 def help_key():
