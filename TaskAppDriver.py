@@ -14,7 +14,7 @@ class TaskAppDriver:
         """Edits the nth task."""
         file = open("tasklist.txt", "r")
         q = Queue(maxsize=0)  # infinite size
-        not_found = 0  # Tracks if nth task exists
+        found = 0  # Tracks if nth task exists
 
         # If task exists, let user edit
         for task in file.readlines():
@@ -24,15 +24,15 @@ class TaskAppDriver:
             if task_num == n:
                 # Put new task into queue
                 task = input(f"New task #{n}: ")
+                found = 1
+                q.put(task)
             else:
                 task = task.split()[1:]
+                q.put(" ".join(task))
 
-            q.put(" ".join(task))
-
-        if not_found == 1:
-            print("Task not found.")
-        else:
+        if found == 1:
             self.rewrite_file(q)
+        return found
 
     def remove_task(self, n):
         """Removes the nth task."""
