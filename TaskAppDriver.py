@@ -1,3 +1,6 @@
+"""
+Driver class for task app.
+"""
 from queue import Queue
 
 
@@ -5,10 +8,9 @@ class TaskAppDriver:
     """Actions within task app."""
 
     def add_task(self, task):
-        """Numbers new task and appends to file."""
-        task_num = self.total_num_of_tasks()  # 0-based numbering
+        """Appends new task to file."""
         file = open("tasklist.txt", "a")
-        file.write(f"{task_num} {task}\n")
+        file.write(f"{task}\n")
 
     def edit_task(self, n):
         """Edits the nth task."""
@@ -71,10 +73,10 @@ class TaskAppDriver:
         file.truncate()  # truncates file to 0th byte
 
     def show_tasks(self):
-        """Prints out all tasks on file."""
+        """Prints out all tasks with 1-based numbering to file."""
         file = open("tasklist.txt", "r")
-        for task in file.readlines():
-            print(task[:-1])  # Leaves out newline char
+        for task_num, task in enumerate(file.readlines()):
+            print(f"{task_num} {task[:-1]}")  # Don't print newline char
 
     def total_num_of_tasks(self):
         """Returns the total number of tasks currently on file."""

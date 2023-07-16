@@ -1,6 +1,8 @@
+"""
+Runs the main application.
+"""
 import TaskAppDriver
 
-"""Runs the main application."""
 
 driver = TaskAppDriver.TaskAppDriver()  # calls driver class
 print("Type 'help' for to see cmds.")
@@ -65,7 +67,8 @@ def show_tasks():
 
 def add_tasks(user_input):
     """Adds a new task."""
-    driver.add_task(user_input.split()[1])  # Leave "add" cmd out
+    temp = user_input.split()[1:]
+    driver.add_task(" ".join(temp))  # Leave "add" cmd out
     print("Added")
 
 
