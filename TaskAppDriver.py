@@ -9,12 +9,12 @@ class TaskAppDriver:
 
     def add_task(self, task):
         """Appends new task to file."""
-        file = open("tasklist.txt", "a")
+        file = open("output/tasklist.txt", "a")
         file.write(f"{task}\n")
 
     def edit_task(self, n):
         """Edits the nth task."""
-        file = open("tasklist.txt", "r")
+        file = open("output/tasklist.txt", "r")
         q = Queue(maxsize=0)  # infinite size
         found = 0  # Tracks if nth task exists
 
@@ -38,7 +38,7 @@ class TaskAppDriver:
 
     def remove_task(self, n):
         """Removes the nth task."""
-        file = open("tasklist.txt", "r")
+        file = open("output/tasklist.txt", "r")
         q = Queue(maxsize=0)  # infinite size
         found = 0  # Tracks if nth task exists
 
@@ -68,24 +68,26 @@ class TaskAppDriver:
 
     def clear_file(self):
         """Clears all tasks from file."""
-        file = open("tasklist.txt", "r+")
+        file = open("output/tasklist.txt", "r+")
         file.seek(0)
         file.truncate()  # truncates file to 0th byte
 
     def show_tasks(self):
         """Prints out all tasks with 1-based numbering to file."""
-        file = open("tasklist.txt", "r")
+        file = open("output/tasklist.txt", "r")
         for task_num, task in enumerate(file.readlines()):
             print(f"{task_num} {task[:-1]}")  # Don't print newline char
 
     def total_num_of_tasks(self):
         """Returns the total number of tasks currently on file."""
-        file = open("tasklist.txt", "r")
+        file = open("output/tasklist.txt", "r")
         return len(file.readlines())
 
     def close_file(self):
         """Closes file."""
         try:
-            open("tasklist.txt", "r").close()  # Read mode so file not overwritten
+            open(
+                "output/tasklist.txt", "r"
+            ).close()  # Read mode so file not overwritten
         except FileNotFoundError:
             None  # File doesn't exist
