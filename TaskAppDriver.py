@@ -8,9 +8,39 @@ class TaskAppDriver:
     """Actions within task app."""
 
     def add_task(self, task):
-        """Appends new task to file."""
-        file = open("output/tasklist.txt", "a")
-        file.write(f"{task}\n")
+        """Adds and sorts tasks based on zero-shot classification scores."""
+        tasklist = open("output/tasklist.txt", "r+")
+        nlp_output = open("output/sort_tasks_output.txt", "r+")
+        # Infinite size queues
+        morning, afternoon, evening = (
+            Queue(maxsize=0),
+            Queue(maxsize=0),
+            Queue(maxsize=0),
+        )
+
+        if len(tasklist.read()) == 0:
+            # task is the 1st task
+            morning.put(task)
+            self.write_to_file(morning)
+        else:
+            # Sort tasks into the queue for appropriate time
+            for output in nlp_output.readlines():
+                dict = eval(output)  # str to dict
+                # Labels already sorted from inc to dec
+                time_done = dict["labels"][0]
+                task = dict["sequence"]
+
+                if time_done == "morning":
+                    morning.put(task)
+                elif time_done == "afternoon":
+                    afternoon.put(task)
+                else:
+                    evening.put(task)
+
+            self.write_to_file(morning)
+            # Appends afternoon and evening after morning
+            self.write_to_file(afternoon, clear=0)
+            self.write_to_file(evening, clear=0)
 
     def edit_task(self, n):
         """Edits the nth task."""
@@ -33,7 +63,7 @@ class TaskAppDriver:
                 q.put(" ".join(task))
 
         if found == 1:
-            self.rewrite_file(q)
+            self.write_to_file(q)
         return found
 
     def remove_task(self, n):
@@ -55,22 +85,19 @@ class TaskAppDriver:
                 found = 1
 
         if found == 1:
-            self.rewrite_file(q)
+            self.write_to_file(q)
         return found
 
-    def rewrite_file(self, q):
-        """Rewrites file given a queue of tasks (FIFO)."""
+    def write_to_file(self, q, clear=1):
+        """Clears file by default then rewrites file given a queue of tasks (FIFO)."""
         # Clears file
-        self.clear_file()
-        # Add tasks from queue into file
+        if clear:
+            self.clear_file()
+        # Add tasks from queue to file
+        file = open("output/tasklist.txt", "a")
         while not q.empty():
-            self.add_task(q.get())
-
-    def clear_file(self):
-        """Clears all tasks from file."""
-        file = open("output/tasklist.txt", "r+")
-        file.seek(0)
-        file.truncate()  # truncates file to 0th byte
+            # Adds new task
+            file.write(f"{q.get()}\n")
 
     def show_tasks(self):
         """Prints out all tasks with 1-based numbering to file."""
