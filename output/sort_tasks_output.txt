@@ -1,0 +1,10 @@
+{'sequence': 'Eat breakfast\n', 'labels': ['morning', 'evening', 'afternoon'], 'scores': [0.9410900473594666, 0.0358053594827652, 0.02310456708073616]}
+{'sequence': 'Do makeup\n', 'labels': ['morning', 'evening', 'afternoon'], 'scores': [0.4615478515625, 0.348021924495697, 0.1904301941394806]}
+{'sequence': 'Commute to work\n', 'labels': ['morning', 'evening', 'afternoon'], 'scores': [0.5518195033073425, 0.2799946963787079, 0.1681857705116272]}
+{'sequence': 'Do work\n', 'labels': ['morning', 'evening', 'afternoon'], 'scores': [0.4985727071762085, 0.3405105173587799, 0.16091673076152802]}
+{'sequence': 'Go to meeting\n', 'labels': ['evening', 'morning', 'afternoon'], 'scores': [0.47475665807724, 0.34044700860977173, 0.1847963184118271]}
+{'sequence': 'Eat lunch\n', 'labels': ['afternoon', 'morning', 'evening'], 'scores': [0.7566362619400024, 0.1329634189605713, 0.11040037125349045]}
+{'sequence': 'Go for a run\n', 'labels': ['morning', 'evening', 'afternoon'], 'scores': [0.4043828845024109, 0.3219720423221588, 0.2736451029777527]}
+{'sequence': 'Cook dinner\n', 'labels': ['evening', 'afternoon', 'morning'], 'scores': [0.8691713809967041, 0.07490035891532898, 0.055928267538547516]}
+{'sequence': 'Watch movie\n', 'labels': ['evening', 'morning', 'afternoon'], 'scores': [0.5738202929496765, 0.2726573348045349, 0.15352243185043335]}
+{'sequence': 'Sleep\n', 'labels': ['evening', 'afternoon', 'morning'], 'scores': [0.5628495812416077, 0.258206844329834, 0.17894352972507477]}

@@ -8,9 +8,19 @@ class TaskAppDriver:
     """Actions within task app."""
 
     def add_task(self, task):
-        """Appends new task to file."""
+        """Adds new task in the order it's expected to be done."""
         file = open("output/tasklist.txt", "a")
         file.write(f"{task}\n")
+        self.sort_tasks()
+
+    def sort_task(self):
+        """Sorts tasks based on zero-shot classification scores."""
+        file = open("output/sort_tasks_output.txt", "r")
+        for line in file.readlines():
+            dict = dict(line)
+            # Find when task likely to be done
+            index, _ = enumerate(max(dict.scores))
+            time_done = dict.labels[index]
 
     def edit_task(self, n):
         """Edits the nth task."""
@@ -66,12 +76,6 @@ class TaskAppDriver:
         while not q.empty():
             self.add_task(q.get())
 
-    def clear_file(self):
-        """Clears all tasks from file."""
-        file = open("output/tasklist.txt", "r+")
-        file.seek(0)
-        file.truncate()  # truncates file to 0th byte
-
     def show_tasks(self):
         """Prints out all tasks with 1-based numbering to file."""
         file = open("output/tasklist.txt", "r")
@@ -82,6 +86,12 @@ class TaskAppDriver:
         """Returns the total number of tasks currently on file."""
         file = open("output/tasklist.txt", "r")
         return len(file.readlines())
+
+    def clear_file(self):
+        """Clears all tasks from file."""
+        file = open("output/tasklist.txt", "r+")
+        file.seek(0)
+        file.truncate()  # truncates file to 0th byte
 
     def close_file(self):
         """Closes file."""
