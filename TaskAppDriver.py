@@ -2,33 +2,31 @@
 Driver class for task app.
 """
 from queue import Queue
+import SortTasks  # [x] import SortTasks.ipynb
 
 
 class TaskAppDriver:
     """Actions within task app."""
 
-    def add_task(self, task):
+    def add_task(self, new_task):
         """Adds and sorts tasks based on zero-shot classification scores."""
-        tasklist = open("output/tasklist.txt", "r+")
-        nlp_output = open("output/sort_tasks_output.txt", "r+")
-        # Infinite size queues
-        morning, afternoon, evening = (
-            Queue(maxsize=0),
-            Queue(maxsize=0),
-            Queue(maxsize=0),
-        )
+        self.write_to_file(task=f"{new_task}\n", clear=0)  # 1st task
 
-        if len(tasklist.read()) == 0:
-            # task is the 1st task
-            morning.put(task)
-            self.write_to_file(morning)
-        else:
+        if self.total_num_of_tasks() != 0:
+            SortTasks.SortTasks()  # output scores for each time of day
+            nlp_output = open("output/sort_tasks_output.txt", "r")
+            morning, afternoon, evening = (
+                Queue(maxsize=0),
+                Queue(maxsize=0),
+                Queue(maxsize=0),
+            )  # Infinite size queues
+
             # Sort tasks into the queue for appropriate time
             for output in nlp_output.readlines():
                 dict = eval(output)  # str to dict
-                # Labels already sorted from inc to dec
+                # Labels already sorted largest to smallest
                 time_done = dict["labels"][0]
-                task = dict["sequence"]
+                task = dict["sequence"][:-1]  # remove newline char
 
                 if time_done == "morning":
                     morning.put(task)
@@ -37,10 +35,10 @@ class TaskAppDriver:
                 else:
                     evening.put(task)
 
-            self.write_to_file(morning)
+            self.write_to_file(q=morning)
             # Appends afternoon and evening after morning
-            self.write_to_file(afternoon, clear=0)
-            self.write_to_file(evening, clear=0)
+            self.write_to_file(q=afternoon, clear=0)
+            self.write_to_file(q=evening, clear=0)
 
     def edit_task(self, n):
         """Edits the nth task."""
@@ -63,7 +61,7 @@ class TaskAppDriver:
                 q.put(" ".join(task))
 
         if found == 1:
-            self.write_to_file(q)
+            self.write_to_file(q=q)
         return found
 
     def remove_task(self, n):
@@ -85,19 +83,27 @@ class TaskAppDriver:
                 found = 1
 
         if found == 1:
-            self.write_to_file(q)
+            self.write_to_file(q=q)
         return found
 
-    def write_to_file(self, q, clear=1):
-        """Clears file by default then rewrites file given a queue of tasks (FIFO)."""
-        # Clears file
+    def write_to_file(self, q: Queue() = None, task: str = None, clear=1):
+        """
+        Appends a task to tasklist or rewrites file given a queue of
+        tasks (FIFO). Clears file by default.
+        """
         if clear:
+            # Clear tasks from file
             self.clear_file()
-        # Add tasks from queue to file
-        file = open("output/tasklist.txt", "a")
-        while not q.empty():
-            # Adds new task
-            file.write(f"{q.get()}\n")
+
+        with open("output/tasklist.txt", "a") as file:
+            if task:
+                # Append a single task to file
+                file.write(task)
+            elif q:
+                # Add tasks from queue to file
+                while not q.empty():
+                    # Adds new task
+                    file.write(f"{q.get()}\n")
 
     def show_tasks(self):
         """Prints out all tasks with 1-based numbering to file."""
@@ -109,6 +115,12 @@ class TaskAppDriver:
         """Returns the total number of tasks currently on file."""
         file = open("output/tasklist.txt", "r")
         return len(file.readlines())
+
+    def clear_file(self):
+        """Clears all tasks from file."""
+        with open("output/tasklist.txt", "r+") as file:
+            file.seek(0)
+            file.truncate()  # truncates file to 0th byte
 
     def close_file(self):
         """Closes file."""

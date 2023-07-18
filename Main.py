@@ -4,10 +4,6 @@ Runs the main application.
 import TaskAppDriver
 
 
-driver = TaskAppDriver.TaskAppDriver()  # calls driver class
-print("Type 'help' for to see cmds.")
-
-
 def ask_user():
     """Gets user input and executes corresponding action."""
     while True:
@@ -67,15 +63,15 @@ def show_tasks():
 
 def add_tasks(user_input):
     """Adds a new task."""
-    temp = user_input.split()[1:]
-    driver.add_task(" ".join(temp))  # Leave "add" cmd out
+    task = user_input.split(maxsplit=1)[1]
+    driver.add_task(task)  # Leave "add" cmd out
     print("Added")
 
 
 def remove_tasks(user_input):
     """Removes a task. Prints message stating (un)successful."""
-    input = user_input.split()[1]  # Leave "rm" cmd out
-    if driver.remove_task(input):
+    task_num = user_input.split()[1]  # Leave "rm" cmd out
+    if driver.remove_task(task_num):
         print("Removed")
     else:
         print("Task not found.")
@@ -83,11 +79,13 @@ def remove_tasks(user_input):
 
 def edit_tasks(user_input):
     """Lets user edit task. Prints message stating (un)successful."""
-    input = user_input.split()[1]  # Leave "edit" cmd out
-    if driver.edit_task(input):
+    task_num = user_input.split()[1]  # Leave "edit" cmd out
+    if driver.edit_task(task_num):
         print("Edited")
     else:
         print("Task not found.")
 
 
+driver = TaskAppDriver.TaskAppDriver()  # calls driver class
+print("Type 'help' for to see cmds.")
 ask_user()
