@@ -1,0 +1,4 @@
+# Ignores venv folder
+__pycache__/
+.vscode/
+venv/

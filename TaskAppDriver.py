@@ -2,7 +2,7 @@
 Driver class for task app.
 """
 from queue import Queue
-import SortTasks  # [x] import SortTasks.ipynb
+import SortTasks
 
 
 class TaskAppDriver:
@@ -86,7 +86,7 @@ class TaskAppDriver:
             self.write_to_file(q=q)
         return found
 
-    def write_to_file(self, q: Queue() = None, task: str = None, clear=1):
+    def write_to_file(self, q: Queue = None, task: str = None, clear=1):
         """
         Appends a task to tasklist or rewrites file given a queue of
         tasks (FIFO). Clears file by default.
