@@ -1,5 +1,5 @@
 """
-Class to classify what time of day task is done.
+Function to classify what time of day task is done.
 """
 from transformers import pipeline
 
