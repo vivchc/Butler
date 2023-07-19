@@ -1,4 +1,7 @@
-# Ignores venv folder
+# Ignored folders
 __pycache__/
 .vscode/
 venv/
+
+# Ignored file extensions
+*.txt

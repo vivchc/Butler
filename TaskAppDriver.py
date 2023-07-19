@@ -8,6 +8,16 @@ import SortTasks
 class TaskAppDriver:
     """Actions within task app."""
 
+    def __init__(self):
+        """Constructor."""
+        try:
+            # Read mode; prevent data overwritten
+            file = open("output/tasklist.txt", "r")
+        except FileNotFoundError:
+            # Create file if doesn't exist
+            file = open("output/tasklist.txt", "w")
+        file.close()
+
     def add_task(self, new_task):
         """Adds and sorts tasks based on zero-shot classification scores."""
         self.write_to_file(task=f"{new_task}\n", clear=0)  # 1st task
